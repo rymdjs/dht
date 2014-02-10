@@ -1,0 +1,29 @@
+{
+  "name": "dht",
+  "version": "0.0.1",
+  "description": "HTTP Interface for key lookup in DHT (namecoin)",
+  "main": "app.js",
+  "dependencies": {
+    "nmcRPC": "~0.5.0",
+    "restify": "~2.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/datx02/dht"
+  },
+  "keywords": [
+    "namecoin",
+    "rsa",
+    "dht"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/datx02/dht/issues"
+  },
+  "homepage": "https://github.com/datx02/dht"
+}
