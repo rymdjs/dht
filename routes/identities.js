@@ -29,6 +29,15 @@ module.exports = function(app, options) {
         });
     };
 
+    var cleanupEndpoints = function() {
+        _.map(endpoints, function(val, key, list) {
+            val = _.filter(val, function(endpoint) {
+                endpoint.lastSeen + settings.endpointCleanupInterval > Date.now();
+            });
+            list[key] = map;
+        });
+    };
+
     //ROUTES
     var addEndpoint = function(req, res, next) {
         var id = req.params[0];
@@ -76,6 +85,7 @@ module.exports = function(app, options) {
 
 	return {
 		findIdentity: findIdentity,
-        addEndpoint: addEndpoint
+        addEndpoint: addEndpoint,
+        cleanupEndpoints: cleanupEndpoints
 	};
 };

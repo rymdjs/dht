@@ -20,3 +20,5 @@ server.post({path: /^\/identities\/([0-9a-zA-Z-_.]+)\/endpoints\/add$/, version:
 server.listen(settings.port, settings.ip, function(){
 	console.log('%s listening on %s', server.name, server.url);
 });
+
+setInterval(identities.cleanupEndpoints, settings.endpointCleanupInterval);
