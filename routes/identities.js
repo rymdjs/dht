@@ -25,7 +25,7 @@ module.exports = function(app, options) {
                     result[key] = val[key];
                 }
             }
-            onDone(keys);
+            onDone(result);
         });
     };
 
@@ -40,6 +40,7 @@ module.exports = function(app, options) {
         fetchPubKeys(id,
             function(keys) {
                 result = _.extend(result, keys);
+                res.send(200, result);
             },
             function(err) {
                 if(err.code === -4) {
