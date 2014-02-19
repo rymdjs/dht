@@ -34,7 +34,7 @@ module.exports = function(app, options) {
 		var id = req.params[0],
             result = {
                 id: id,
-                endpoints: getEndpoints(id);
+                endpoints: getEndpoints(id)
             };
 		console.log('querying "'+id+'"');
         fetchPubKeys(id,
