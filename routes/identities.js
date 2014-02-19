@@ -29,6 +29,34 @@ module.exports = function(app, options) {
         });
     };
 
+    var cleanupEndpoints = function() {
+        _.map(endpoints, function(val, key, list) {
+            val = _.filter(val, function(endpoint) {
+                endpoint.lastSeen + settings.endpointCleanupInterval > Date.now();
+            });
+            list[key] = map;
+        });
+    };
+
+    //ROUTES
+    var addEndpoint = function(req, res, next) {
+        var id = req.params[0];
+        try {
+            var endpoint = JSON.parse(req.body);
+        } catch(e) {
+            res.send(500, {});
+            return next();
+        }
+        if(typeof endpoints[id] === 'undefined') {
+            endpoints[id] = {}
+        };
+        var eps = endpoints[id];
+        endpoint.lastSeen = Date.now();
+        eps[endpoint.id] = endpoint;
+        res.send(200, {});
+        return next();
+    };
+
 	var findIdentity = function(req, res, next) {
 		res.setHeader('Access-Control-Allow-Origin','*');
 		var id = req.params[0],
@@ -56,6 +84,8 @@ module.exports = function(app, options) {
 	};
 
 	return {
-		findIdentity: findIdentity
+		findIdentity: findIdentity,
+        addEndpoint: addEndpoint,
+        cleanupEndpoints: cleanupEndpoints
 	};
 };
