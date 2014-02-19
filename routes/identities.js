@@ -6,7 +6,7 @@ module.exports = function(app, options) {
         endpoints = {};
 
     var getEndpoints = function(id) {
-        return endpoints[id] || {};
+        return endpoints[id];
     };
 
     var fetchPubKeys = function(id, onDone, onError) {
@@ -31,10 +31,11 @@ module.exports = function(app, options) {
 
     var cleanupEndpoints = function() {
         _.map(endpoints, function(val, key, list) {
-            val = _.filter(val, function(endpoint) {
-                endpoint.lastSeen + settings.endpointCleanupInterval > Date.now();
+            _.each(val, function(endpoint, id) {
+                if(endpoint.lastSeen + settings.endpointCleanupTimeout < Date.now()) {
+                    delete val[id];
+                }
             });
-            list[key] = map;
         });
     };
 
@@ -48,12 +49,14 @@ module.exports = function(app, options) {
             return next();
         }
         if(typeof endpoints[id] === 'undefined') {
+            console.log('new');
             endpoints[id] = {}
         };
         var eps = endpoints[id];
         endpoint.lastSeen = Date.now();
         eps[endpoint.id] = endpoint;
-        res.send(200, {});
+        res.send(200, endpoint);
+        console.log(endpoints);
         return next();
     };
 
@@ -65,6 +68,7 @@ module.exports = function(app, options) {
                 endpoints: getEndpoints(id)
             };
 		console.log('querying "'+id+'"');
+        console.log(endpoints);
         fetchPubKeys(id,
             function(keys) {
                 result = _.extend(result, keys);
