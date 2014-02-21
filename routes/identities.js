@@ -1,7 +1,7 @@
 module.exports = function(app, options) {
 
     var _ = require('underscore'),
-	    nmc = options.nmc,
+        nmc = options.nmc,
         settings = options.settings,
         endpoints = {};
 
@@ -10,8 +10,8 @@ module.exports = function(app, options) {
     };
 
     var fetchPubKeys = function(id, onDone, onError) {
-		var keyNames = ['ssh-rsa'];
-		nmc.cmd('name_show', settings.nmcNamespace+'/'+id, function(err, data) {
+        var keyNames = ['ssh-rsa'];
+        nmc.cmd('name_show', settings.nmcNamespace+'/'+id, function(err, data) {
             if (err) {
                 onError(err);
                 return;
@@ -48,26 +48,26 @@ module.exports = function(app, options) {
             res.send(500, {});
             return next();
         }
-        if(typeof endpoints[id] === 'undefined') {
+        if(endpoints[id]) {
             console.log('new');
-            endpoints[id] = {}
+            endpoints[id] = {};
         };
         var eps = endpoints[id];
         endpoint.lastSeen = Date.now();
-        eps[endpoint.id] = endpoint;
+        eps[endpoint.id] = endpoint;    //If endpoint id collission, prefix key in an appropriate way
         res.send(200, endpoint);
         console.log(endpoints);
         return next();
     };
 
-	var findIdentity = function(req, res, next) {
-		res.setHeader('Access-Control-Allow-Origin','*');
-		var id = req.params[0],
+    var findIdentity = function(req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin','*');
+        var id = req.params[0],
             result = {
                 id: id,
                 endpoints: getEndpoints(id)
             };
-		console.log('querying "'+id+'"');
+        console.log('querying "'+id+'"');
         console.log(endpoints);
         fetchPubKeys(id,
             function(keys) {
@@ -84,12 +84,12 @@ module.exports = function(app, options) {
                 }
             }
         );
-		return next();
-	};
+        return next();
+    };
 
-	return {
-		findIdentity: findIdentity,
+    return {
+        findIdentity: findIdentity,
         addEndpoint: addEndpoint,
         cleanupEndpoints: cleanupEndpoints
-	};
+    };
 };
