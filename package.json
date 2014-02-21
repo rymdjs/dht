@@ -4,8 +4,9 @@
   "description": "HTTP Interface for key lookup in DHT (namecoin)",
   "main": "app.js",
   "dependencies": {
-    "nmcRPC": "~0.5.0",
-    "restify": "~2.6.1"
+    "nmcRPC": "git://github.com/indolering/node-namecoin.git",
+    "restify": "~2.6.1",
+    "underscore": ">=1.6.0"
   },
   "devDependencies": {},
   "scripts": {
