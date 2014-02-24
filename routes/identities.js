@@ -41,14 +41,14 @@ module.exports = function(app, options) {
 
     //ROUTES
     var addEndpoint = function(req, res, next) {
-        var id = req.params[0];
+        var id = req.params.name;
         try {
             var endpoint = JSON.parse(req.body);
         } catch(e) {
             res.send(500, {});
             return next();
         }
-        if(endpoints[id]) {
+        if( !endpoints[id] ) {
             console.log('new');
             endpoints[id] = {};
         };
