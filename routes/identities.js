@@ -42,18 +42,15 @@ module.exports = function(app, options) {
     //ROUTES
     var addEndpoint = function(req, res, next) {
         var id = req.params.name;
-        try {
-            var endpoint = JSON.parse(req.body);
-        } catch(e) {
-            res.send(500, {});
-            return next();
-        }
+        var endpoint = {
+          id: req.params.id,
+          lastSeen: Date.now()
+        };
         if( !endpoints[id] ) {
             console.log('new');
             endpoints[id] = {};
         };
         var eps = endpoints[id];
-        endpoint.lastSeen = Date.now();
         eps[endpoint.id] = endpoint;    //If endpoint id collission, prefix key in an appropriate way
         res.send(200, endpoint);
         console.log(endpoints);
