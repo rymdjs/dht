@@ -41,9 +41,9 @@ module.exports = function(app, options) {
 
     //ROUTES
     var addEndpoint = function(req, res, next) {
-        var id = decodeURIComponent(req.params.name);
+        var id = decodeURIComponent(req.params[0]);
         var endpoint = {
-          id: req.params.id,
+          id: decodeURIComponent(req.params[1]),
           lastSeen: Date.now()
         };
         if( !endpoints[id] ) {
