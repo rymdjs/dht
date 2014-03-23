@@ -10,7 +10,7 @@ module.exports = function(app, options) {
     };
 
     var fetchPubKeys = function(id, onDone, onError) {
-        var keyNames = ['ssh-rsa'];
+        var keyNames = ['ssh-rsa', 'rsa'];
         nmc.cmd('name_show', settings.nmcNamespace+'/'+id, function(err, data) {
             if (err) {
                 onError(err);
